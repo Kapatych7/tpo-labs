@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Вход{% endblock %}
+{% block content %}
+<h1>Вход в личный кабинет</h1>
+{% if error %}<div class="alert alert-error" id="flash" role="alert">{{ error }}</div>{% endif %}
+<form method="post" id="login-form" action="{{ url_for('login') }}" novalidate>
+  <label for="username">Логин</label>
+  <input type="text" id="username" name="username" autocomplete="username">
+  <label for="password">Пароль</label>
+  <input type="password" id="password" name="password" autocomplete="current-password">
+  <div style="margin-top:18px"><button type="submit" id="login-btn" name="login">Войти</button></div>
+</form>
+<p class="muted">Тестовая учётная запись: student / Passw0rd!</p>
+{% endblock %}

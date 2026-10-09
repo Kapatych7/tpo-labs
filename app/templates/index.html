@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Учебный стенд для лабораторных по ТПО</h1>
+<p class="muted">Приложения, написанные для тестирования в лабораторных работах.</p>
+<div class="cards">
+  <a class="card" href="{{ url_for('calc') }}"><b>Калькулятор</b><br><span class="muted">ЛР1, ЛР6</span></a>
+  <a class="card" href="{{ url_for('todo') }}"><b>Список задач</b><br><span class="muted">ЛР2</span></a>
+  <a class="card" href="{{ url_for('login') }}"><b>Страница входа</b><br><span class="muted">ЛР3</span></a>
+  <a class="card" href="{{ url_for('contact') }}"><b>Обратная связь</b><br><span class="muted">ЛР4</span></a>
+</div>
+<p class="muted" style="margin-top:20px">REST API: <code>/api/health</code>, <code>/api/products</code>, <code>/api/products/&lt;id&gt;</code> (ЛР8)</p>
+{% endblock %}

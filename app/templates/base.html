@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Учебный стенд ТПО{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% block head %}{% endblock %}
+</head>
+<body>
+<header>
+  <a class="brand" href="{{ url_for('index') }}">Стенд ТПО</a>
+  <a href="{{ url_for('calc') }}" id="nav-calc">Калькулятор</a>
+  <a href="{{ url_for('todo') }}" id="nav-todo">Задачи</a>
+  <a href="{{ url_for('login') }}" id="nav-login">Вход</a>
+  <a href="{{ url_for('contact') }}" id="nav-contact">Обратная связь</a>
+</header>
+<main>
+{% block content %}{% endblock %}
+</main>
+{% block scripts %}{% endblock %}
+</body>
+</html>

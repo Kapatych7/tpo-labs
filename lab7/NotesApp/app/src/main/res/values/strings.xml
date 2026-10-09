@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Заметки ТПО</string>
+    <string name="hint_note">Текст заметки</string>
+    <string name="add">Добавить</string>
+    <string name="clear">Очистить всё</string>
+    <string name="empty_error">Введите текст заметки</string>
+    <string name="counter">Заметок: %1$d</string>
+    <string name="deleted">Заметка удалена</string>
+    <string name="empty_list">Заметок пока нет</string>
+    <string name="too_long">Не более 100 символов</string>
+</resources>

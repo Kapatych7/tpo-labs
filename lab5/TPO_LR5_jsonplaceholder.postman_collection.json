@@ -1,0 +1,249 @@
+{
+  "info": {
+    "name": "ТПО ЛР5 — JSONPlaceholder Users",
+    "description": "Коллекция запросов к https://jsonplaceholder.typicode.com: GET, POST, PUT + негативный и дополнительный сценарии.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://jsonplaceholder.typicode.com"
+    },
+    {
+      "key": "userId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "01 GET — получить пользователя",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Статус 200 OK\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Время ответа < 2000 мс\", () => pm.expect(pm.response.responseTime).to.be.below(2000));",
+              "pm.test(\"Content-Type = JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "const user = pm.response.json();",
+              "pm.test(\"Структура JSON пользователя\", () => {",
+              "    pm.expect(user).to.have.all.keys(\"id\", \"name\", \"username\", \"email\", \"address\", \"phone\", \"website\", \"company\");",
+              "    pm.expect(user.address).to.include.keys(\"street\", \"city\", \"zipcode\", \"geo\");",
+              "    pm.expect(user.company).to.include.keys(\"name\", \"catchPhrase\", \"bs\");",
+              "});",
+              "pm.test(\"Значения полей\", () => {",
+              "    pm.expect(user.id).to.eql(1);",
+              "    pm.expect(user.name).to.eql(\"Leanne Graham\");",
+              "    pm.expect(user.username).to.eql(\"Bret\");",
+              "    pm.expect(user.email).to.match(/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/);",
+              "});",
+              "pm.collectionVariables.set(\"userId\", user.id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json; charset=UTF-8"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/users/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "1"
+          ]
+        }
+      }
+    },
+    {
+      "name": "02 POST — создать пользователя",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const sent = JSON.parse(pm.request.body.raw);",
+              "pm.test(\"Статус 201 Created\", () => pm.response.to.have.status(201));",
+              "const body = pm.response.json();",
+              "pm.test(\"Ответ содержит новый id\", () => {",
+              "    pm.expect(body).to.have.property(\"id\");",
+              "    pm.expect(body.id).to.be.a(\"number\").and.to.eql(11);",
+              "});",
+              "pm.test(\"Поля совпадают с отправленными\", () => {",
+              "    pm.expect(body.name).to.eql(sent.name);",
+              "    pm.expect(body.username).to.eql(sent.username);",
+              "    pm.expect(body.email).to.eql(sent.email);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json; charset=UTF-8"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/users",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Михаил Герасимов\",\n  \"username\": \"mgerasimov\",\n  \"email\": \"mikhail@example.com\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "03 PUT — обновить пользователя",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const sent = JSON.parse(pm.request.body.raw);",
+              "pm.test(\"Статус 200 OK\", () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test(\"id не изменился\", () => pm.expect(body.id).to.eql(Number(pm.collectionVariables.get(\"userId\"))));",
+              "pm.test(\"Поля обновлены\", () => {",
+              "    pm.expect(body.name).to.eql(sent.name);",
+              "    pm.expect(body.email).to.eql(sent.email);",
+              "    pm.expect(body.website).to.eql(sent.website);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json; charset=UTF-8"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/users/{{userId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "{{userId}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": 1,\n  \"name\": \"Leanne Graham-Updated\",\n  \"username\": \"Bret\",\n  \"email\": \"leanne.updated@example.com\",\n  \"website\": \"tpo-lab.example\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "04 GET — несуществующий пользователь (негативный)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Несуществующий пользователь -> 404\", () => pm.response.to.have.status(404));",
+              "pm.test(\"Пустой объект в ответе\", () => pm.expect(pm.response.json()).to.eql({}));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json; charset=UTF-8"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/users/9999",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "9999"
+          ]
+        }
+      }
+    },
+    {
+      "name": "05 GET — посты пользователя (query-параметр)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Статус 200 OK\", () => pm.response.to.have.status(200));",
+              "const posts = pm.response.json();",
+              "pm.test(\"10 постов пользователя 1\", () => {",
+              "    pm.expect(posts).to.be.an(\"array\").with.lengthOf(10);",
+              "    posts.forEach(p => {",
+              "        pm.expect(p.userId).to.eql(1);",
+              "        pm.expect(p).to.have.all.keys(\"userId\", \"id\", \"title\", \"body\");",
+              "    });",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json; charset=UTF-8"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/posts?userId=1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "posts"
+          ],
+          "query": [
+            {
+              "key": "userId",
+              "value": "1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
